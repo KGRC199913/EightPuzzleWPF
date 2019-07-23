@@ -23,6 +23,15 @@ namespace EightPuzzle
         public MainWindow()
         {
             InitializeComponent();
+            GameTimer timer = new GameTimer(62);
+            TimerLabel.DataContext = timer;
+            timer.OnStop += new InvokeOnStop(
+                () =>
+                {
+                    MessageBox.Show("Countdown finished");
+                }
+                );
+            timer.Start();
         }
     }
 }
