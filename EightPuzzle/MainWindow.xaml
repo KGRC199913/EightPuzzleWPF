@@ -14,56 +14,84 @@
         xmlns:local="clr-namespace:EightPuzzle"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid x:Name="MainGrid">
+    <Window.Resources>
+        <Storyboard x:Key="OpenDrawerStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)"
+                                           Storyboard.TargetName="MenuDrawerStackPanel">
+                <EasingDoubleKeyFrame KeyTime="0" Value="{Binding Path=ActualWidth, ElementName=DrawerCloseSizeBorder}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="{Binding Path=ActualWidth, ElementName=DrawerOpenSizeBorder}"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseDrawerStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)"
+                                           Storyboard.TargetName="MenuDrawerStackPanel">
+                <EasingDoubleKeyFrame KeyTime="0" Value="{Binding Path=ActualWidth, ElementName=DrawerOpenSizeBorder}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="{Binding Path=ActualWidth, ElementName=DrawerCloseSizeBorder}"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Window.Triggers>
+        
+    </Window.Triggers>
+    <Grid x:Name="MainGameGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="6*"/>
-            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition x:Name="MainGameGridSecondColumn" Width="3*"/>
+            <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="0.75*"/>
             <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-        <ContentControl x:Name="MainGameContentControl"
+        <ContentControl x:Name="GameAreaContentControl"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="1"
+                        Grid.Row="1"
+                        Grid.RowSpan="2"/>
+        <Border x:Name="DrawerCloseSizeBorder"
                         Grid.Column="0"
                         Grid.ColumnSpan="1"
-                        Grid.Row="0"
-                        Grid.RowSpan="2"/>
-        <StackPanel x:Name="StatusStackPanel"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="1"
-                    Grid.Row="0"
-                    Grid.RowSpan="1">
-            <!-- Show the game status -->
-        </StackPanel>
-        <materialDesign:Flipper x:Name="FullImageFlipper"
-                                Grid.Column="1"
-                                Grid.ColumnSpan="1"
-                                Grid.Row="1"
-                                Grid.RowSpan="1">
-            <materialDesign:Flipper.FrontContent>
-                <StackPanel>
-                    
-                </StackPanel>
-            </materialDesign:Flipper.FrontContent>
-            <materialDesign:Flipper.BackContent>
-                <StackPanel>
-                    
-                </StackPanel>
-            </materialDesign:Flipper.BackContent>
-        </materialDesign:Flipper>
-        <Border x:Name="OpenMenuSizeBorder"
-                Grid.Column="1"
+                        BorderThickness="0"/>
+        <Border x:Name="DrawerOpenSizeBorder"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        BorderThickness="0"/>
+        <Canvas x:Name="MenuCanvas"
+                Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Grid.Row="0"
-                Grid.RowSpan="2"
-                IsHitTestVisible="False"/>
-        <Border x:Name="CloseMenuSizeBorder"
-                Grid.Column="2"
-                Grid.ColumnSpan="1"
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                IsHitTestVisible="False"/>
-        
+                Grid.RowSpan="3">
+            <StackPanel x:Name="MenuDrawerStackPanel"                  
+                    Background="AliceBlue"  
+                    Width="{Binding Path=ActualWidth,ElementName=DrawerCloseSizeBorder}"
+                    Height="{Binding Path=ActualHeight, ElementName=MainGameGrid}">
+                <ToggleButton x:Name="DrawerToggleButton"
+                      Grid.Column="1"
+                      Style="{StaticResource MaterialDesignHamburgerToggleButton}">
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard Storyboard="{StaticResource OpenDrawerStoryboard}"/>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                            <BeginStoryboard Storyboard="{StaticResource CloseDrawerStoryboard}"/>
+                        </EventTrigger>
+                    </ToggleButton.Triggers>
+                </ToggleButton>
+                <StackPanel.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </StackPanel.RenderTransform>
+            </StackPanel>
+            <Grid x:Name="StatusAreaGrid"
+                  Canvas.Left="{Binding ElementName=DrawerCloseSizeBorder, Path=ActualWidth}"
+                  Width="{Binding ElementName=MainGameGridSecondColumn, Path=ActualWidth}">
+                
+            </Grid>
+        </Canvas>
     </Grid>
 </Window>
