@@ -73,14 +73,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="PlayArea.xaml">
+    <Page Include="PlayAreaUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlayArea.xaml.cs">
-      <DependentUpon>PlayArea.xaml</DependentUpon>
+    <Compile Include="PlayAreaUserControl.xaml.cs">
+      <DependentUpon>PlayAreaUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
