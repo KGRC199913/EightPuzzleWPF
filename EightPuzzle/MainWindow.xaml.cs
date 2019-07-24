@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,18 +21,42 @@ namespace EightPuzzle
     /// </summary>
     public partial class MainWindow : Window
     {
+        GameTimer _timer = new GameTimer(10);
         public MainWindow()
         {
             InitializeComponent();
-            GameTimer timer = new GameTimer(62);
-            TimerLabel.DataContext = timer;
-            timer.OnStop += new InvokeOnStop(
+            TimerLabel.DataContext = _timer;
+            _timer.OnStop += new InvokeOnStop(
                 () =>
                 {
                     MessageBox.Show("Countdown finished");
                 }
                 );
-            timer.Start();
+        }
+
+        private void QuitGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            _timer.Pause();
+        }
+
+        private void LoadGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            _timer.Resume();
+        }
+
+        private void LoadImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = false;
+
+            if (dialog.ShowDialog() == true)
+            {
+                string path = dialog.FileName;
+                FullImage.Source = new BitmapImage(new Uri(path));
+                LoadImageButton.Visibility = Visibility.Collapsed;
+                FullImage.Visibility = Visibility.Visible;
+                _timer.Start();
+            }
         }
     }
 }

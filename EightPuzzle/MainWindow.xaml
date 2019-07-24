@@ -15,121 +15,83 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <Storyboard x:Key="OpenDrawerStoryboard">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)"
-                                           Storyboard.TargetName="MenuDrawerStackPanel">
-                <EasingDoubleKeyFrame KeyTime="0" Value="{Binding Path=ActualWidth, ElementName=DrawerCloseSizeBorder}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="{Binding Path=ActualWidth, ElementName=DrawerOpenSizeBorder}"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="CloseDrawerStoryboard">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)"
-                                           Storyboard.TargetName="MenuDrawerStackPanel">
-                <EasingDoubleKeyFrame KeyTime="0" Value="{Binding Path=ActualWidth, ElementName=DrawerOpenSizeBorder}"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="{Binding Path=ActualWidth, ElementName=DrawerCloseSizeBorder}"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <local:SecondToTimeConverter x:Key="secToTimeConverter"/>
+        <local:SecondToTimeConverter x:Key="secConverter"/>
     </Window.Resources>
-    <Window.Triggers>
-
-    </Window.Triggers>
     <Grid x:Name="MainGameGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="MainGameGridFirstColumn"  Width="1*"/>
-            <ColumnDefinition x:Name="MainGameGridSecondColumn" Width="3*"/>
-            <ColumnDefinition x:Name="MainGameGridThirdColumn"  Width="6*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="MainGameGRidFirstRow" Height="0.75*"/>
-            <RowDefinition x:Name="MainGameGRidSecondRow" Height="5*"/>
-        </Grid.RowDefinitions>
-        <ContentControl x:Name="GameAreaContentControl"
-                        Grid.Column="2"
-                        Grid.ColumnSpan="1"
-                        Grid.Row="1"
-                        Grid.RowSpan="1"/>
-        <materialDesign:ColorZone   x:Name="TopBarColorZone"
-                                    Mode="PrimaryLight"
-                                    Grid.Column="1"
-                                    Grid.ColumnSpan="2"
-                                    Grid.Row="0"
-                                    Grid.RowSpan="1">
-            <StackPanel Orientation="Horizontal"
-                        Height="{Binding ElementName=DrawerOpenSizeBorder, Path=ActualHeight}">
-
-            </StackPanel>
-        </materialDesign:ColorZone>
-        <Border x:Name="DrawerCloseSizeBorder"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="1"
-                        BorderThickness="0"/>
-        <Border x:Name="DrawerOpenSizeBorder"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        BorderThickness="0"/>
-        <Border x:Name="StatusAreaWidthBorder"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="1"
-                        Grid.Row="1"
-                        Grid.RowSpan="1"
-                        BorderThickness="0"/>
-        <Canvas x:Name="MenuCanvas"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Grid.Row="0"
-                Grid.RowSpan="2">
-            <materialDesign:ColorZone x:Name="SideDrawerColorZone"
-                                      Mode="PrimaryLight"
-                                      Panel.ZIndex="3">
-                <StackPanel x:Name="MenuDrawerStackPanel"                  
-                    Width="{Binding Path=ActualWidth,ElementName=DrawerCloseSizeBorder}"
-                    Height="{Binding Path=ActualHeight, ElementName=MainGameGrid}">
-                    <ToggleButton x:Name="DrawerToggleButton"
-                      Grid.Column="1"
-                      Style="{StaticResource MaterialDesignHamburgerToggleButton}">
-                        <ToggleButton.Triggers>
-                            <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                <BeginStoryboard Storyboard="{StaticResource OpenDrawerStoryboard}"/>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                <BeginStoryboard Storyboard="{StaticResource CloseDrawerStoryboard}"/>
-                            </EventTrigger>
-                        </ToggleButton.Triggers>
-                    </ToggleButton>
-                    <StackPanel.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </StackPanel.RenderTransform>
-                </StackPanel>
-            </materialDesign:ColorZone>
-            <Grid x:Name="StatusAreaGrid"
-                  Canvas.Left="{Binding ElementName=DrawerCloseSizeBorder, Path=ActualWidth}"
-                  Canvas.Top="{Binding ElementName=DrawerCloseSizeBorder, Path=ActualHeight}"
-                  Panel.ZIndex="2"
-                  Width="{Binding ElementName=StatusAreaWidthBorder, Path=ActualWidth}"
-                  Height="{Binding ElementName=StatusAreaWidthBorder, Path=ActualHeight}">
+        <materialDesign:ColorZone
+            x:Name="SideMenuColorZone"
+            Mode="PrimaryLight"
+            Grid.Column="0"
+            Grid.ColumnSpan="1">
+            <Grid x:Name="SideMenuGrid"
+                  Height="{Binding ElementName=MainGameGrid, Path=ActualHeight}"
+                  Margin="10, 0, 10, 0">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Image x:Name="FullImage"
-                       Grid.Row="0"
-                       Grid.RowSpan="1"/>
-                <StackPanel x:Name="StatusAreaStackPanel"
-                            Grid.Row="1"
-                            Grid.RowSpan="1">
-                    <Label x:Name="TimerLabel"
-                           Content="{Binding Second, Converter={StaticResource secToTimeConverter}}"
-                           Width="{Binding ElementName=StatusAreaStackPanel, Path=ActualWidth}"
-                           FontSize="30"
-                           HorizontalContentAlignment="Center"/>
-                </StackPanel>
+                <Button x:Name="RestartGameButton"
+                    Grid.Row="2">
+                    <materialDesign:PackIcon Kind="Restart"/>
+                </Button>
+                <Button x:Name="SaveGameButton"
+                    Grid.Row="3">
+                    <materialDesign:PackIcon Kind="ContentSave"/>
+                </Button>
+                <Button x:Name="LoadGameButton"
+                        Click="LoadGameButton_Click"
+                    Grid.Row="4">
+                    <materialDesign:PackIcon Kind="FileImport"/>
+                </Button>
+                <Button x:Name="QuitGameButton"
+                        Click="QuitGameButton_Click"
+                    Grid.Row="5">
+                    <materialDesign:PackIcon Kind="ExitToApp"/>
+                </Button>
             </Grid>
-        </Canvas>
+        </materialDesign:ColorZone>
+        <Grid x:Name="StatusGrid"
+              Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Border x:Name="ConfigAreaBorder"
+                    Grid.Row="0"
+                    IsHitTestVisible="False"/>
+            <Canvas x:Name="ConfigAndImageFlipper"
+                                    Height="{Binding ElementName=ConfigAreaBorder, Path=ActualHeight}"
+                                    Width="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth}">
+                <Button x:Name="LoadImageButton" Canvas.Left="83" Canvas.Top="98" Height="50" Width="80"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Click="LoadImageButton_Click">
+                    <materialDesign:PackIcon Kind="ImageAdd"/>
+                </Button>
+                <Image x:Name="FullImage"
+                       Width="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth}"
+                       Height="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth}"
+                       Visibility="Hidden"/>
+            </Canvas>
+            <StackPanel x:Name="OverallStatusStackPanel"
+                        Grid.Row="1"
+                        Grid.RowSpan="1">
+                <Label x:Name="TimerLabel"
+                   HorizontalAlignment="Center"
+                   Content="{Binding Second, Converter={StaticResource secConverter}}"
+                   FontSize="20"/>
+            </StackPanel>
+        </Grid>
+        <ContentControl x:Name="MainGameContentControl"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="1"/>
     </Grid>
 </Window>
