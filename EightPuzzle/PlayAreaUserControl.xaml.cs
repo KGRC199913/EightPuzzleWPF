@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static EightPuzzle.Constrants;
+using static EightPuzzle.Constants;
 
 namespace EightPuzzle
 {
@@ -36,6 +37,7 @@ namespace EightPuzzle
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            Container.Children.Clear();
             var scr = new OpenFileDialog();
             if (scr.ShowDialog() == true)
             {
@@ -134,6 +136,71 @@ namespace EightPuzzle
             var j = (int)(position.Y / (PUZZLE_SIZE.HEIGHT + PUZZLE_PADDING));
 
             Swap_Puzzle(i, j);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            Image empty_puzzle = new Image();
+            int pos_x = -1;
+            int pos_y = -1;
+            for (int i = 0; i < 3; ++i)
+            {
+                for (int j = 0; j < 3; ++j)
+                {
+                    if (puzzle.Images[i, j] == null)
+                    {
+                        empty_puzzle = puzzle.Images[i, j];
+                        pos_x = i;
+                        pos_y = j;
+                        break;
+                    }
+                }
+            }
+            try
+            {
+                if (e.Key == Key.Down || e.Key == Key.NumPad2)
+                {
+                    Debug.WriteLine(e.Key);
+                    Swap_Puzzle(pos_x, pos_y - 1);
+                    return;
+                }
+            }
+            catch (Exception ex) { };
+            try
+            {
+                if (e.Key == Key.Up || e.Key == Key.NumPad8)
+                {
+                    Debug.WriteLine(e.Key);
+                    Swap_Puzzle(pos_x, pos_y + 1);
+                    return;
+                }
+            }
+            catch (Exception ex) { };
+            try
+            {
+                if (e.Key == Key.Right || e.Key == Key.NumPad6)
+                {
+                    Debug.WriteLine(e.Key);
+                    Swap_Puzzle(pos_x - 1, pos_y);
+                    return;
+                }
+            }
+            catch (Exception ex) { };
+            try
+            {
+                if (e.Key == Key.Left || e.Key == Key.NumPad4)
+                {
+                    Debug.WriteLine(e.Key);
+                    Swap_Puzzle(pos_x + 1, pos_y);
+                    return;
+                }
+            }
+            catch (Exception ex) { };
+        }
+
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+
         }
     }
 }
