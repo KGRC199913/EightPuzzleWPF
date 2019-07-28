@@ -19,9 +19,12 @@ namespace EightPuzzle
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
     public partial class MainWindow : Window
     {
         GameTimer _timer = new GameTimer(10);
+        IDao _dao = new SaveLoadManager();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,16 +35,12 @@ namespace EightPuzzle
                     MessageBox.Show("Countdown finished");
                 }
                 );
+            MainGameContentControl.Content = new PlayAreaUserControl();
         }
 
         private void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
-            _timer.Pause();
-        }
-
-        private void LoadGameButton_Click(object sender, RoutedEventArgs e)
-        {
-            _timer.Resume();
+            System.Windows.Application.Current.Shutdown();
         }
 
         private void LoadImageButton_Click(object sender, RoutedEventArgs e)
@@ -56,6 +55,35 @@ namespace EightPuzzle
                 LoadImageButton.Visibility = Visibility.Collapsed;
                 FullImage.Visibility = Visibility.Visible;
                 _timer.Start();
+            }
+        }
+
+        private void SaveGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.AddExtension = true;
+            dialog.DefaultExt = ".dat";
+            dialog.CheckPathExists = true;
+
+            if (dialog.ShowDialog() == true)
+            {
+                var dataSrc = MainGameContentControl.Content as ISaveable;
+                SaveData data = new SaveData();
+                data.bitmapImage = dataSrc.Image;
+                data.location = dataSrc.Positions;
+                _dao.Save(data, dialog.FileName);
+            }
+        }
+
+        private void LoadGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = false;
+
+            if (dialog.ShowDialog() == true)
+            {
+                var data = _dao.Load(dialog.FileName);
+                // TODO: Load new UserControl
             }
         }
     }

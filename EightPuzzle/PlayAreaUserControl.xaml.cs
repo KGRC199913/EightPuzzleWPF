@@ -323,5 +323,10 @@ namespace EightPuzzle
             }
             catch (Exception ex) { };
         }
+
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }

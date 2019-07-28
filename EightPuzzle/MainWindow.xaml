@@ -45,6 +45,7 @@
                     <materialDesign:PackIcon Kind="Restart"/>
                 </Button>
                 <Button x:Name="SaveGameButton"
+                        Click="SaveGameButton_Click"
                     Grid.Row="3">
                     <materialDesign:PackIcon Kind="ContentSave"/>
                 </Button>
