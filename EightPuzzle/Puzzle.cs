@@ -18,16 +18,73 @@ namespace EightPuzzle
         List<int> Pool;
         List<int> PoolX;
         List<int> PoolY;
-        public List<int> Current_Pos;
+
+        public List<int> ListOfPosition()
+        {
+            List<int> pos_list = new List<int>();
+            for (int i = 0; i < 3; ++i)
+            {
+                for (int j = 0; j < 3; ++j)
+                {
+                    if (Images[j, i] != null)
+                        pos_list.Add((int)Images[j, i].Tag);
+                    else
+                        pos_list.Add(8);
+                }
+            }
+            return pos_list;
+        }
+
+        public Puzzle(string source, List<int> pos_list)
+        {
+            Images = new Image[3, 3];
+            PoolX = new List<int> { 0, 1, 2, 0, 1, 2, 0, 1 };
+            PoolY = new List<int> { 0, 0, 0, 1, 1, 1, 2, 2 };
+
+            //Get the selected image from user.
+            Img_src = new BitmapImage(new Uri(source));
+            PUZZLE_SIZE.WIDTH = (int)PUZZLE_TOTAL_SIZE / 3;
+            PUZZLE_SIZE.HEIGHT = (int)(PUZZLE_TOTAL_SIZE * Img_src.Height / Img_src.Width) / 3;
+
+            //Initialize temporary variables.
+            CroppedBitmap img_cropped;
+            Image[,] temp_imgs = new Image[3, 3];
+            Image imgView;
+            int index = 0;
+
+            //Initialize image puzzle.
+            for (int i = 0; i < 3; ++i)
+            {
+                for (int j = 0; j < 3; ++j)
+                {
+                    if (pos_list[index] != 8)
+                    {
+                        img_cropped = new CroppedBitmap(Img_src, new Int32Rect(
+                            (int)(PoolX[pos_list[index]] * Img_src.PixelWidth / 3), (int)(PoolY[pos_list[index]] * Img_src.PixelHeight / 3),
+                            (int)Img_src.PixelWidth / 3, (int)Img_src.PixelHeight / 3
+                            ));
+
+                        imgView = new Image();
+                        imgView.Source = img_cropped;
+                        imgView.Tag = pos_list[index];
+                        imgView.Height = PUZZLE_SIZE.HEIGHT;
+                        imgView.Width = PUZZLE_SIZE.WIDTH;
+
+                        Images[j, i] = imgView;
+                    }
+                    index++;
+                }
+            }
+        }
+
 
         public Puzzle(string source)
         {
             //Initialize properties.
             Images = new Image[3, 3];
             Pool = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
-            PoolX = new List<int> { 0, 0, 0, 1, 1, 1, 2, 2, 2 };
-            PoolY = new List<int> { 0, 1, 2, 0, 1, 2, 0, 1, 2 };
-            Current_Pos = new List<int>();
+            PoolX = new List<int> { 0, 1, 2, 0, 1, 2, 0, 1 };
+            PoolY = new List<int> { 0, 0, 0, 1, 1, 1, 2, 2 };
 
             //Get the selected image from user.
             Img_src = new BitmapImage(new Uri(source));
@@ -56,11 +113,11 @@ namespace EightPuzzle
 
                         imgView = new Image();
                         imgView.Source = img_cropped;
+                        imgView.Tag = Pool[randint];
                         imgView.Height = PUZZLE_SIZE.HEIGHT;
                         imgView.Width = PUZZLE_SIZE.WIDTH;
 
-                        Images[i, j] = imgView;
-                        Current_Pos.Add(randint);
+                        Images[j, i] = imgView;
 
                         Pool.RemoveAt(randint);
                         PoolX.RemoveAt(randint);
@@ -68,8 +125,6 @@ namespace EightPuzzle
                     }
                 }
             }
-            Current_Pos.Add(8);
-            Images[2, 2] = null;
         }
     }
 }

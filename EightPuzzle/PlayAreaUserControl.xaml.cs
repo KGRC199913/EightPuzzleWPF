@@ -29,6 +29,7 @@ namespace EightPuzzle
         }
 
         Puzzle puzzle = null;
+        bool isStarted = false;
 
         /// <summary>
         /// Insert an image to play.
@@ -37,17 +38,19 @@ namespace EightPuzzle
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            isStarted = true;
             Container.Children.Clear();
             var scr = new OpenFileDialog();
             if (scr.ShowDialog() == true)
             {
-                puzzle = new Puzzle(scr.FileName);
+                puzzle = new Puzzle(scr.FileName, new List<int> { 0, 1, 2, 3, 4, 5, 6, 8, 7 });
+                //puzzle = new Puzzle(scr.FileName);
 
                 for (int i = 0; i < 3; ++i)
                 {
                     for (int j = 0; j < 3; ++j)
                     {
-                        if (i != 2 || j != 2)
+                        if (puzzle.Images[i, j] != null)
                         {
                             Container.Children.Add(puzzle.Images[i, j]);
 
@@ -131,6 +134,7 @@ namespace EightPuzzle
         /// <param name="e"></param>
         private void Container_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (isStarted != true) return;
             var position = e.GetPosition(Container);
             var i = (int)(position.X / (PUZZLE_SIZE.WIDTH + PUZZLE_PADDING));
             var j = (int)(position.Y / (PUZZLE_SIZE.HEIGHT + PUZZLE_PADDING));
@@ -140,6 +144,7 @@ namespace EightPuzzle
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            if (isStarted != true) return;
             Image empty_puzzle = new Image();
             int pos_x = -1;
             int pos_y = -1;
@@ -156,6 +161,7 @@ namespace EightPuzzle
                     }
                 }
             }
+
             try
             {
                 if (e.Key == Key.Down || e.Key == Key.NumPad2)
@@ -198,9 +204,124 @@ namespace EightPuzzle
             catch (Exception ex) { };
         }
 
-        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        private void MoveUp_Button(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                Image empty_puzzle = new Image();
+                int pos_x = -1;
+                int pos_y = -1;
+                for (int i = 0; i < 3; ++i)
+                {
+                    for (int j = 0; j < 3; ++j)
+                    {
+                        if (puzzle.Images[i, j] == null)
+                        {
+                            empty_puzzle = puzzle.Images[i, j];
+                            pos_x = i;
+                            pos_y = j;
+                            break;
+                        }
+                    }
+                }
+                try
+                {
+                    Swap_Puzzle(pos_x, pos_y + 1);
+                    return;
+                }
+                catch (Exception ex) { };
+            }
+            catch (Exception ex) { };
+        }
 
+        private void MoveDown_Button(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Image empty_puzzle = new Image();
+                int pos_x = -1;
+                int pos_y = -1;
+                for (int i = 0; i < 3; ++i)
+                {
+                    for (int j = 0; j < 3; ++j)
+                    {
+                        if (puzzle.Images[i, j] == null)
+                        {
+                            empty_puzzle = puzzle.Images[i, j];
+                            pos_x = i;
+                            pos_y = j;
+                            break;
+                        }
+                    }
+                }
+                try
+                {
+                    Swap_Puzzle(pos_x, pos_y - 1);
+                    return;
+                }
+                catch (Exception ex) { };
+            }
+            catch (Exception ex) { };
+        }
+
+        private void MoveLeft_Button(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Image empty_puzzle = new Image();
+                int pos_x = -1;
+                int pos_y = -1;
+                for (int i = 0; i < 3; ++i)
+                {
+                    for (int j = 0; j < 3; ++j)
+                    {
+                        if (puzzle.Images[i, j] == null)
+                        {
+                            empty_puzzle = puzzle.Images[i, j];
+                            pos_x = i;
+                            pos_y = j;
+                            break;
+                        }
+                    }
+                }
+                try
+                {
+                    Swap_Puzzle(pos_x + 1, pos_y);
+                    return;
+                }
+                catch (Exception ex) { };
+            }
+            catch (Exception ex) { };
+        }
+
+        private void MoveRight_Button(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Image empty_puzzle = new Image();
+                int pos_x = -1;
+                int pos_y = -1;
+                for (int i = 0; i < 3; ++i)
+                {
+                    for (int j = 0; j < 3; ++j)
+                    {
+                        if (puzzle.Images[i, j] == null)
+                        {
+                            empty_puzzle = puzzle.Images[i, j];
+                            pos_x = i;
+                            pos_y = j;
+                            break;
+                        }
+                    }
+                }
+                try
+                {
+                    Swap_Puzzle(pos_x - 1, pos_y);
+                    return;
+                }
+                catch (Exception ex) { };
+            }
+            catch (Exception ex) { };
         }
     }
 }
