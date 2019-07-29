@@ -23,29 +23,42 @@ namespace EightPuzzle
     /// </summary>
     public partial class PlayAreaUserControl : UserControl
     {
-        public PlayAreaUserControl()
-        {
-            InitializeComponent();
-        }
-
         Puzzle puzzle = null;
         bool isStarted = false;
 
         /// <summary>
-        /// Insert an image to play.
+        /// PlayAreaUserControl constructor.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button_Click(object sender, RoutedEventArgs e)
+        /// <param name="source">Path of image.</param>
+        public PlayAreaUserControl(string source)
+        {
+            InitializeComponent();
+            puzzle = new Puzzle(source);
+            Initialize();
+        }
+
+        /// <summary>
+        /// PlayAreaUserControl constructor.
+        /// </summary>
+        /// <param name="source">Path of image.</param>
+        /// <param name="Pos_list">List of position.</param>
+        public PlayAreaUserControl(string source, List<int> Pos_list)
+        {
+            InitializeComponent();
+            puzzle = new Puzzle(source, Pos_list);
+            Initialize();
+        }
+
+        /// <summary>
+        /// Initialize variables.
+        /// </summary>
+        private void Initialize()
         {
             isStarted = true;
             Container.Children.Clear();
             var scr = new OpenFileDialog();
             if (scr.ShowDialog() == true)
             {
-                puzzle = new Puzzle(scr.FileName, new List<int> { 0, 1, 2, 3, 4, 5, 6, 8, 7 });
-                //puzzle = new Puzzle(scr.FileName);
-
                 for (int i = 0; i < 3; ++i)
                 {
                     for (int j = 0; j < 3; ++j)
@@ -60,7 +73,49 @@ namespace EightPuzzle
                     }
                 }
             }
+
         }
+
+        /// <summary>
+        /// Return an one-dimension array represent position of puzzles.
+        /// </summary>
+        /// <returns></returns>
+        public List<int> ListOfPosition()
+        {
+            return puzzle.ListOfPosition();
+        }
+
+        /// <summary>
+        /// Insert an image to play.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    isStarted = true;
+        //    Container.Children.Clear();
+        //    var scr = new OpenFileDialog();
+        //    if (scr.ShowDialog() == true)
+        //    {
+        //        puzzle = new Puzzle(scr.FileName, new List<int> { 0, 1, 2, 3, 4, 5, 6, 8, 7 });
+        //        //puzzle = new Puzzle(scr.FileName);
+
+        //        for (int i = 0; i < 3; ++i)
+        //        {
+        //            for (int j = 0; j < 3; ++j)
+        //            {
+        //                if (puzzle.Images[i, j] != null)
+        //                {
+        //                    Container.Children.Add(puzzle.Images[i, j]);
+
+        //                    Canvas.SetLeft(puzzle.Images[i, j], i * (PUZZLE_SIZE.WIDTH + PUZZLE_PADDING));
+        //                    Canvas.SetTop(puzzle.Images[i, j], j * (PUZZLE_SIZE.HEIGHT + PUZZLE_PADDING));
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //}
 
         /// <summary>
         /// Swap the selected puzzle with the empty (sub-function).
@@ -143,6 +198,11 @@ namespace EightPuzzle
                 Swap_Puzzle(i, j);
         }
 
+        /// <summary>
+        /// Handle while pressing a key.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (isStarted != true) return;

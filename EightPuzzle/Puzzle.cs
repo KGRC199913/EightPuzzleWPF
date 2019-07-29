@@ -18,7 +18,11 @@ namespace EightPuzzle
         List<int> Pool;
         List<int> PoolX;
         List<int> PoolY;
-
+        
+        /// <summary>
+        /// Return an one-dimension array represent position of puzzles.
+        /// </summary>
+        /// <returns></returns>
         public List<int> ListOfPosition()
         {
             List<int> pos_list = new List<int>();
@@ -35,6 +39,11 @@ namespace EightPuzzle
             return pos_list;
         }
 
+        /// <summary>
+        /// Puzzle constructor.
+        /// </summary>
+        /// <param name="source">Path of image.</param>
+        /// <param name="pos_list">List of position.</param>
         public Puzzle(string source, List<int> pos_list)
         {
             Images = new Image[3, 3];
@@ -77,7 +86,10 @@ namespace EightPuzzle
             }
         }
 
-
+        /// <summary>
+        /// Puzzle constructor.
+        /// </summary>
+        /// <param name="source">Path of image.</param>
         public Puzzle(string source)
         {
             //Initialize properties.
