@@ -139,7 +139,8 @@ namespace EightPuzzle
             var i = (int)(position.X / (PUZZLE_SIZE.WIDTH + PUZZLE_PADDING));
             var j = (int)(position.Y / (PUZZLE_SIZE.HEIGHT + PUZZLE_PADDING));
 
-            Swap_Puzzle(i, j);
+            if (i < 3 && j < 3)
+                Swap_Puzzle(i, j);
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -202,131 +203,6 @@ namespace EightPuzzle
                 }
             }
             catch (Exception ex) { };
-        }
-
-        private void MoveUp_Button(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Image empty_puzzle = new Image();
-                int pos_x = -1;
-                int pos_y = -1;
-                for (int i = 0; i < 3; ++i)
-                {
-                    for (int j = 0; j < 3; ++j)
-                    {
-                        if (puzzle.Images[i, j] == null)
-                        {
-                            empty_puzzle = puzzle.Images[i, j];
-                            pos_x = i;
-                            pos_y = j;
-                            break;
-                        }
-                    }
-                }
-                try
-                {
-                    Swap_Puzzle(pos_x, pos_y + 1);
-                    return;
-                }
-                catch (Exception ex) { };
-            }
-            catch (Exception ex) { };
-        }
-
-        private void MoveDown_Button(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Image empty_puzzle = new Image();
-                int pos_x = -1;
-                int pos_y = -1;
-                for (int i = 0; i < 3; ++i)
-                {
-                    for (int j = 0; j < 3; ++j)
-                    {
-                        if (puzzle.Images[i, j] == null)
-                        {
-                            empty_puzzle = puzzle.Images[i, j];
-                            pos_x = i;
-                            pos_y = j;
-                            break;
-                        }
-                    }
-                }
-                try
-                {
-                    Swap_Puzzle(pos_x, pos_y - 1);
-                    return;
-                }
-                catch (Exception ex) { };
-            }
-            catch (Exception ex) { };
-        }
-
-        private void MoveLeft_Button(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Image empty_puzzle = new Image();
-                int pos_x = -1;
-                int pos_y = -1;
-                for (int i = 0; i < 3; ++i)
-                {
-                    for (int j = 0; j < 3; ++j)
-                    {
-                        if (puzzle.Images[i, j] == null)
-                        {
-                            empty_puzzle = puzzle.Images[i, j];
-                            pos_x = i;
-                            pos_y = j;
-                            break;
-                        }
-                    }
-                }
-                try
-                {
-                    Swap_Puzzle(pos_x + 1, pos_y);
-                    return;
-                }
-                catch (Exception ex) { };
-            }
-            catch (Exception ex) { };
-        }
-
-        private void MoveRight_Button(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Image empty_puzzle = new Image();
-                int pos_x = -1;
-                int pos_y = -1;
-                for (int i = 0; i < 3; ++i)
-                {
-                    for (int j = 0; j < 3; ++j)
-                    {
-                        if (puzzle.Images[i, j] == null)
-                        {
-                            empty_puzzle = puzzle.Images[i, j];
-                            pos_x = i;
-                            pos_y = j;
-                            break;
-                        }
-                    }
-                }
-                try
-                {
-                    Swap_Puzzle(pos_x - 1, pos_y);
-                    return;
-                }
-                catch (Exception ex) { };
-            }
-            catch (Exception ex) { };
-        }
-
-        private void UserControl_KeyDown(object sender, KeyEventArgs e)
-        {
-
         }
     }
 }
