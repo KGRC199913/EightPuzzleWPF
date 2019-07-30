@@ -44,10 +44,10 @@ namespace EightPuzzle
         /// </summary>
         /// <param name="source">Path of image.</param>
         /// <param name="Pos_list">List of position.</param>
-        public PlayAreaUserControl(string source, List<int> Pos_list)
+        public PlayAreaUserControl(BitmapImage image_source, List<int> Pos_list)
         {
             InitializeComponent();
-            puzzle = new Puzzle(source, Pos_list);
+            puzzle = new Puzzle(image_source, Pos_list);
             Initialize();
         }
 

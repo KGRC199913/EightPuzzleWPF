@@ -44,14 +44,14 @@ namespace EightPuzzle
         /// </summary>
         /// <param name="source">Path of image.</param>
         /// <param name="pos_list">List of position.</param>
-        public Puzzle(string source, List<int> pos_list)
+        public Puzzle(BitmapImage image_source, List<int> pos_list)
         {
             Images = new Image[3, 3];
             PoolX = new List<int> { 0, 1, 2, 0, 1, 2, 0, 1 };
             PoolY = new List<int> { 0, 0, 0, 1, 1, 1, 2, 2 };
 
             //Get the selected image from user.
-            Img_src = new BitmapImage(new Uri(source));
+            Img_src = image_source;
             PUZZLE_SIZE.WIDTH = (int)PUZZLE_TOTAL_SIZE / 3;
             PUZZLE_SIZE.HEIGHT = (int)(PUZZLE_TOTAL_SIZE * Img_src.Height / Img_src.Width) / 3;
 
