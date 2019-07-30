@@ -10,6 +10,7 @@ namespace EightPuzzle
     class SaveData
     {
         public BitmapImage bitmapImage { get; set; }
-        public Tuple<int, int>[][] location { get; set; }
+        public List<int> location { get; set; }
+        public int time { get; set; }
     }
 }

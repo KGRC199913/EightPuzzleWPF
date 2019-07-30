@@ -9,7 +9,6 @@ namespace EightPuzzle
 {
     interface ISaveable
     {
-        BitmapImage Image { get; set; }
-        Tuple<int, int>[][] Positions { get; set;}
+        List<int> Positions { get; }
     }
 }

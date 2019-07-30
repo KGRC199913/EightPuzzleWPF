@@ -17,7 +17,10 @@
     <Window.Resources>
         <local:SecondToTimeConverter x:Key="secConverter"/>
     </Window.Resources>
-    <Grid x:Name="MainGameGrid">
+    <Grid x:Name="MainGameGrid"
+          KeyDown="Window_KeyDown"
+          Focusable="True"
+          Loaded="MainGameGrid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="3*"/>
@@ -41,7 +44,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Button x:Name="RestartGameButton"
-                    Grid.Row="2">
+                    Grid.Row="2" Click="RestartGameButton_Click">
                     <materialDesign:PackIcon Kind="Restart"/>
                 </Button>
                 <Button x:Name="SaveGameButton"
@@ -80,6 +83,8 @@
                 <Image x:Name="FullImage"
                        Width="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth}"
                        Height="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth}"
+                       Canvas.Left="30"
+                       Canvas.Top="10"
                        Visibility="Hidden"/>
             </Canvas>
             <StackPanel x:Name="OverallStatusStackPanel"
@@ -93,6 +98,8 @@
         </Grid>
         <ContentControl x:Name="MainGameContentControl"
                         Grid.Column="2"
-                        Grid.ColumnSpan="1"/>
+                        Grid.ColumnSpan="1"
+                        BorderBrush="Black"
+                        BorderThickness="1"/>
     </Grid>
 </Window>

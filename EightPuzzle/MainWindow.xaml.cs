@@ -22,7 +22,8 @@ namespace EightPuzzle
 
     public partial class MainWindow : Window
     {
-        GameTimer _timer = new GameTimer(10);
+        const int TIME_LIMIT = 180;
+        GameTimer _timer = new GameTimer(TIME_LIMIT);
         IDao _dao = new SaveLoadManager();
 
         public MainWindow()
@@ -35,7 +36,7 @@ namespace EightPuzzle
                     MessageBox.Show("Countdown finished");
                 }
                 );
-            MainGameContentControl.Content = new PlayAreaUserControl();
+            
         }
 
         private void QuitGameButton_Click(object sender, RoutedEventArgs e)
@@ -54,12 +55,14 @@ namespace EightPuzzle
                 FullImage.Source = new BitmapImage(new Uri(path));
                 LoadImageButton.Visibility = Visibility.Collapsed;
                 FullImage.Visibility = Visibility.Visible;
+                MainGameContentControl.Content = new PlayAreaUserControl(path);
                 _timer.Start();
             }
         }
 
         private void SaveGameButton_Click(object sender, RoutedEventArgs e)
         {
+            _timer.Pause();
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.AddExtension = true;
             dialog.DefaultExt = ".dat";
@@ -69,22 +72,49 @@ namespace EightPuzzle
             {
                 var dataSrc = MainGameContentControl.Content as ISaveable;
                 SaveData data = new SaveData();
-                data.bitmapImage = dataSrc.Image;
+                data.bitmapImage = FullImage.Source as BitmapImage;
                 data.location = dataSrc.Positions;
+                data.time = _timer.Second;
                 _dao.Save(data, dialog.FileName);
             }
+            _timer.Resume();
         }
 
         private void LoadGameButton_Click(object sender, RoutedEventArgs e)
         {
+            _timer.Pause();
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Multiselect = false;
 
             if (dialog.ShowDialog() == true)
             {
                 var data = _dao.Load(dialog.FileName);
-                // TODO: Load new UserControl
+                if (data == null)
+                    return;
+                FullImage.Source = data.bitmapImage;
+                _timer.Second = data.time;
+                
             }
+            _timer.Resume();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            (MainGameContentControl.Content as PlayAreaUserControl).Window_KeyDown(sender, e);
+            e.Handled = true;
+        }
+
+        private void MainGameGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainGameGrid.Focus();
+        }
+
+        private void RestartGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            _timer.Pause();
+            _timer.Second = TIME_LIMIT;
+            LoadImageButton.Visibility = Visibility.Visible;
+            FullImage.Visibility = Visibility.Collapsed;
         }
     }
 }

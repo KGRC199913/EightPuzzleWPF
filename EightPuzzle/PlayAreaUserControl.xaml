@@ -13,20 +13,13 @@
              FontFamily="{DynamicResource MaterialDesignFont}"
              xmlns:local="clr-namespace:EightPuzzle"
              mc:Ignorable="d" 
-             KeyDown="UserControl_KeyDown"
+             KeyDown="Window_KeyDown"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Canvas>
-        <Canvas Name="Container"
+
+    <Canvas Name="Container"
             Background="White"
             Width="310" Height="310"
             Canvas.Top="70" Canvas.Left="245"
             MouseLeftButtonDown="Container_MouseLeftButtonDown">
-        </Canvas>
-
-        <Button
-            Content="Open File.."
-            Height="25" Width="100"
-            Canvas.Left="50" Canvas.Top="50"
-            Click="Button_Click"/>
     </Canvas>
 </UserControl>

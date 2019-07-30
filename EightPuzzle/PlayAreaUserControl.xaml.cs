@@ -21,10 +21,12 @@ namespace EightPuzzle
     /// <summary>
     /// Interaction logic for PlayArea.xaml
     /// </summary>
-    public partial class PlayAreaUserControl : UserControl
+    public partial class PlayAreaUserControl : UserControl, ISaveable
     {
         Puzzle puzzle = null;
         bool isStarted = false;
+
+        public List<int> Positions => puzzle.ListOfPosition();
 
         /// <summary>
         /// PlayAreaUserControl constructor.
@@ -56,24 +58,19 @@ namespace EightPuzzle
         {
             isStarted = true;
             Container.Children.Clear();
-            var scr = new OpenFileDialog();
-            if (scr.ShowDialog() == true)
+            for (int i = 0; i < 3; ++i)
             {
-                for (int i = 0; i < 3; ++i)
+                for (int j = 0; j < 3; ++j)
                 {
-                    for (int j = 0; j < 3; ++j)
+                    if (puzzle.Images[i, j] != null)
                     {
-                        if (puzzle.Images[i, j] != null)
-                        {
-                            Container.Children.Add(puzzle.Images[i, j]);
+                        Container.Children.Add(puzzle.Images[i, j]);
 
-                            Canvas.SetLeft(puzzle.Images[i, j], i * (PUZZLE_SIZE.WIDTH + PUZZLE_PADDING));
-                            Canvas.SetTop(puzzle.Images[i, j], j * (PUZZLE_SIZE.HEIGHT + PUZZLE_PADDING));
-                        }
+                        Canvas.SetLeft(puzzle.Images[i, j], i * (PUZZLE_SIZE.WIDTH + PUZZLE_PADDING));
+                        Canvas.SetTop(puzzle.Images[i, j], j * (PUZZLE_SIZE.HEIGHT + PUZZLE_PADDING));
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -203,7 +200,7 @@ namespace EightPuzzle
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        public void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (isStarted != true) return;
             Image empty_puzzle = new Image();
@@ -264,5 +261,6 @@ namespace EightPuzzle
             }
             catch (Exception ex) { };
         }
+
     }
 }

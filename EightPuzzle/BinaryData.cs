@@ -10,6 +10,7 @@ namespace EightPuzzle
     class BinaryData
     {
         public byte[] ByteImage { get; set; }
-        public Tuple<int, int> [][] Location { get; set; }
+        public List<int> Location { get; set; }
+        public int time { get; set; }
     }
 }

@@ -33,6 +33,7 @@ namespace EightPuzzle
 
             loadedData.bitmapImage = DecodePhoto(loadedBinaryData.ByteImage);
             loadedData.location = loadedBinaryData.Location;
+            loadedData.time = loadedBinaryData.time;
             return loadedData;
         }
 
@@ -41,6 +42,7 @@ namespace EightPuzzle
             BinaryData binaryData = new BinaryData();
             binaryData.ByteImage = EncodePhote(data.bitmapImage);
             binaryData.Location = data.location;
+            binaryData.time = data.time;
             BinaryFormatter formatter = new BinaryFormatter();
             try
             {
