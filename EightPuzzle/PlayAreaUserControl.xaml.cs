@@ -203,7 +203,7 @@ namespace EightPuzzle
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
             if (isStarted != true) return;
             Image empty_puzzle = new Image();
