@@ -17,13 +17,18 @@ namespace EightPuzzle
             SaveData loadedData = new SaveData();
             BinaryData loadedBinaryData;
             BinaryFormatter formatter = new BinaryFormatter();
+            FileStream fstream = null;
             try
             {
-                FileStream fstream = new FileStream(location, FileMode.Open);
+                fstream = new FileStream(location, FileMode.Open);
                 loadedBinaryData = formatter.Deserialize(fstream) as BinaryData;
             } catch (Exception ex)
             {
                 return null;
+            }
+            finally
+            {
+                fstream?.Close();
             }
 
             if (loadedBinaryData == null)
@@ -34,6 +39,7 @@ namespace EightPuzzle
             loadedData.bitmapImage = DecodePhoto(loadedBinaryData.ByteImage);
             loadedData.location = loadedBinaryData.Location;
             loadedData.time = loadedBinaryData.time;
+
             return loadedData;
         }
 
@@ -44,13 +50,18 @@ namespace EightPuzzle
             binaryData.Location = data.location;
             binaryData.time = data.time;
             BinaryFormatter formatter = new BinaryFormatter();
+            FileStream fstream = null;
             try
             {
-                FileStream fstream = new FileStream(location, FileMode.Create);
+                fstream = new FileStream(location, FileMode.Create);
                 formatter.Serialize(fstream, binaryData);
             } catch (Exception ex)
             {
                 MessageBox.Show("Save Failed");
+            }
+            finally
+            {
+                fstream?.Close();
             }
         }
 
