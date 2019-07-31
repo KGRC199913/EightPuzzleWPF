@@ -13,9 +13,13 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         xmlns:local="clr-namespace:EightPuzzle"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        ResizeMode="CanMinimize"
+        Title="Eight Puzzle Game"
+        Icon="icon.jpg"
+        Height="450" Width="800">
     <Window.Resources>
         <local:SecondToTimeConverter x:Key="secConverter"/>
+        <local:MinusTenConverter x:Key="minusTenConverter"/>
     </Window.Resources>
     <Grid x:Name="MainGameGrid"
           KeyDown="Window_KeyDown"
@@ -23,7 +27,7 @@
           Loaded="MainGameGrid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3.5*"/>
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
         <materialDesign:ColorZone
@@ -43,23 +47,40 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+                <ToggleButton x:Name="DarkModToggleButton"
+                              Grid.Row="1"
+                              Style="{StaticResource MaterialDesignActionToggleButton}"
+                              Checked="DarkModToggleButton_Checked"
+                              Unchecked="DarkModToggleButton_Unchecked"
+                              ToolTip="Dark/Light Mode toggle">
+                    <ToggleButton.Content>
+                        <materialDesign:PackIcon Kind="ThemeLightDark" Foreground="Black"/>
+                    </ToggleButton.Content>
+                    <materialDesign:ToggleButtonAssist.OnContent>
+                        <materialDesign:PackIcon Kind="ThemeLightDark" Foreground="White"/>
+                    </materialDesign:ToggleButtonAssist.OnContent>
+                </ToggleButton>
                 <Button x:Name="RestartGameButton"
-                    Grid.Row="2" Click="RestartGameButton_Click">
+                    Grid.Row="2" Click="RestartGameButton_Click"
+                        ToolTip="Restart Game">
                     <materialDesign:PackIcon Kind="Restart"/>
                 </Button>
                 <Button x:Name="SaveGameButton"
                         Click="SaveGameButton_Click"
-                    Grid.Row="3">
+                    Grid.Row="3"
+                        ToolTip="Save Game">
                     <materialDesign:PackIcon Kind="ContentSave"/>
                 </Button>
                 <Button x:Name="LoadGameButton"
                         Click="LoadGameButton_Click"
-                    Grid.Row="4">
+                    Grid.Row="4"
+                        ToolTip="Load Game">
                     <materialDesign:PackIcon Kind="FileImport"/>
                 </Button>
                 <Button x:Name="QuitGameButton"
                         Click="QuitGameButton_Click"
-                    Grid.Row="5">
+                    Grid.Row="5"
+                        ToolTip="Quit Game">
                     <materialDesign:PackIcon Kind="ExitToApp"/>
                 </Button>
             </Grid>
@@ -72,18 +93,26 @@
             </Grid.RowDefinitions>
             <Border x:Name="ConfigAreaBorder"
                     Grid.Row="0"
+                    BorderBrush="Black"
+                    BorderThickness="0, 0, 1, 1"
+                    IsHitTestVisible="False"/>
+            <Border x:Name="StatusAreaBorder"
+                    Grid.Row="1"
+                    BorderBrush="Black"
+                    BorderThickness="0, 0, 1, 0"
                     IsHitTestVisible="False"/>
             <Canvas x:Name="ConfigAndImageFlipper"
                                     Height="{Binding ElementName=ConfigAreaBorder, Path=ActualHeight}"
                                     Width="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth}">
                 <Button x:Name="LoadImageButton" Canvas.Left="83" Canvas.Top="98" Height="50" Width="80"
-                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Click="LoadImageButton_Click">
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Click="LoadImageButton_Click"
+                        ToolTip="Load an Image">
                     <materialDesign:PackIcon Kind="ImageAdd"/>
                 </Button>
                 <Image x:Name="FullImage"
-                       Width="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth}"
-                       Height="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth}"
-                       Canvas.Left="30"
+                       Width="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth, Converter={StaticResource minusTenConverter}}"
+                       Height="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth, Converter={StaticResource minusTenConverter}}"
+                       Canvas.Left="10"
                        Canvas.Top="10"
                        Visibility="Hidden"/>
             </Canvas>
@@ -94,6 +123,27 @@
                    HorizontalAlignment="Center"
                    Content="{Binding Second, Converter={StaticResource secConverter}}"
                    FontSize="20"/>
+                <ToggleButton x:Name="PauseGameToggleButton"
+                              Style="{StaticResource MaterialDesignActionToggleButton}"
+                              Checked="PauseGameToggleButton_Checked"
+                              Unchecked="PauseGameToggleButton_Unchecked">
+                    <ToggleButton.Content>
+                        <materialDesign:PackIcon Kind="Pause" />
+                    </ToggleButton.Content>
+                    <materialDesign:ToggleButtonAssist.OnContent>
+                        <materialDesign:PackIcon Kind="Play" />
+                    </materialDesign:ToggleButtonAssist.OnContent>
+                </ToggleButton>
+                <Label x:Name="TimeChooseLabel">
+                    Pick number of seconds:
+                </Label>
+                <Slider x:Name="TimeSlider"
+                        Margin="10, 0, 10, 0"
+                        Style="{StaticResource MaterialDesignDiscreteSlider}"
+                        Minimum="180"
+                        Maximum="600"
+                        Value="{Binding TimeLimit, Mode=TwoWay}"
+                        />
             </StackPanel>
         </Grid>
         <ContentControl x:Name="MainGameContentControl"
