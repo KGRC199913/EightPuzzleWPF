@@ -36,6 +36,8 @@ namespace EightPuzzle
         {
             InitializeComponent();
             puzzle = new Puzzle(source);
+            while (isSolvable() == false)
+                puzzle = new Puzzle(source);
             Initialize();
         }
 
@@ -80,6 +82,19 @@ namespace EightPuzzle
         public List<int> ListOfPosition()
         {
             return puzzle.ListOfPosition();
+        }
+
+        public bool isSolvable()
+        {
+            int inv_count = 0;
+            for (int i = 0; i < 3 - 1; i++)
+                for (int j = i + 1; j < 3; j++)
+
+                    // Value 8 is used for empty space 
+                    if ((int)puzzle.Images[j, i].Tag < 8 && (int)puzzle.Images[i, j].Tag < 8 &&
+                                    (int)puzzle.Images[j, i].Tag > (int)puzzle.Images[i, j].Tag)
+                        inv_count++;
+            return inv_count % 2 == 0;
         }
 
         /// <summary>
