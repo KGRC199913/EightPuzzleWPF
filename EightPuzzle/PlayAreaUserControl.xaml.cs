@@ -84,6 +84,10 @@ namespace EightPuzzle
             return puzzle.ListOfPosition();
         }
 
+        /// <summary>
+        /// Check is enalbe to solve 8-puzzles.
+        /// </summary>
+        /// <returns></returns>
         public bool isSolvable()
         {
             int inv_count = 0;
@@ -95,6 +99,25 @@ namespace EightPuzzle
                                     (int)puzzle.Images[j, i].Tag > (int)puzzle.Images[i, j].Tag)
                         inv_count++;
             return inv_count % 2 == 0;
+        }
+
+        /// <summary>
+        /// Check is victory.
+        /// </summary>
+        /// <returns></returns>
+        public bool isVictory()
+        {
+            int index = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (puzzle.Images[i, j] != null && (int)puzzle.Images[i, j].Tag != index)
+                        return false;
+                    index++;
+                }
+            }
+            return true;
         }
 
         /// <summary>
