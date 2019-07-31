@@ -101,56 +101,15 @@ namespace EightPuzzle
             return inv_count % 2 == 0;
         }
 
-        /// <summary>
-        /// Check is victory.
-        /// </summary>
-        /// <returns></returns>
-        public bool isVictory()
+        public delegate void OnVictoryHandler();
+
+        public event OnVictoryHandler OnVictory;
+        void CheckVictory()
         {
-            int index = 0;
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if (puzzle.Images[i, j] != null && (int)puzzle.Images[i, j].Tag != index)
-                        return false;
-                    index++;
-                }
-            }
-            return true;
+            if (puzzle.isVictory())
+                OnVictory?.Invoke();
         }
 
-        /// <summary>
-        /// Insert an image to play.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    isStarted = true;
-        //    Container.Children.Clear();
-        //    var scr = new OpenFileDialog();
-        //    if (scr.ShowDialog() == true)
-        //    {
-        //        puzzle = new Puzzle(scr.FileName, new List<int> { 0, 1, 2, 3, 4, 5, 6, 8, 7 });
-        //        //puzzle = new Puzzle(scr.FileName);
-
-        //        for (int i = 0; i < 3; ++i)
-        //        {
-        //            for (int j = 0; j < 3; ++j)
-        //            {
-        //                if (puzzle.Images[i, j] != null)
-        //                {
-        //                    Container.Children.Add(puzzle.Images[i, j]);
-
-        //                    Canvas.SetLeft(puzzle.Images[i, j], i * (PUZZLE_SIZE.WIDTH + PUZZLE_PADDING));
-        //                    Canvas.SetTop(puzzle.Images[i, j], j * (PUZZLE_SIZE.HEIGHT + PUZZLE_PADDING));
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //}
 
         /// <summary>
         /// Swap the selected puzzle with the empty (sub-function).
@@ -230,7 +189,10 @@ namespace EightPuzzle
             var j = (int)(position.Y / (PUZZLE_SIZE.HEIGHT + PUZZLE_PADDING));
 
             if (i < 3 && j < 3)
+            {
                 Swap_Puzzle(i, j);
+                CheckVictory();
+            }
         }
 
         /// <summary>
@@ -264,6 +226,7 @@ namespace EightPuzzle
                 {
                     Debug.WriteLine(e.Key);
                     Swap_Puzzle(pos_x, pos_y - 1);
+                    CheckVictory();
                     return;
                 }
             }
@@ -274,6 +237,7 @@ namespace EightPuzzle
                 {
                     Debug.WriteLine(e.Key);
                     Swap_Puzzle(pos_x, pos_y + 1);
+                    CheckVictory();
                     return;
                 }
             }
@@ -284,6 +248,7 @@ namespace EightPuzzle
                 {
                     Debug.WriteLine(e.Key);
                     Swap_Puzzle(pos_x - 1, pos_y);
+                    CheckVictory();
                     return;
                 }
             }
@@ -294,11 +259,11 @@ namespace EightPuzzle
                 {
                     Debug.WriteLine(e.Key);
                     Swap_Puzzle(pos_x + 1, pos_y);
+                    CheckVictory();
                     return;
                 }
             }
             catch (Exception ex) { };
         }
-
     }
 }

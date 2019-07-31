@@ -138,5 +138,24 @@ namespace EightPuzzle
                 }
             }
         }
+
+        /// <summary>
+        /// Check is victory.
+        /// </summary>
+        /// <returns></returns>
+        public bool isVictory()
+        {
+            int index = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (Images[i, j] != null && (int)Images[i, j].Tag != index)
+                        return false;
+                    index++;
+                }
+            }
+            return true;
+        }
     }
 }
