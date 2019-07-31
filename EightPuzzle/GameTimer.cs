@@ -15,6 +15,7 @@ namespace EightPuzzle
         private int _second;
         private bool _isPaused;
         private BackgroundWorker _worker;
+        private bool _isStopped = false;
 
         public GameTimer(int second)
         {
@@ -57,12 +58,17 @@ namespace EightPuzzle
             _isPaused = false;
         }
 
+        public void Stop()
+        {
+            _isStopped = true;
+        }
+
         public event InvokeOnStop OnStop;
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void Countdown()
         {
-            while (_second != 0)
+            while (_second != 0 && !_isStopped)
             {
                 if (!_isPaused)
                 {
@@ -73,6 +79,7 @@ namespace EightPuzzle
                 {
                     Thread.Sleep(100);
                 }
+                
             }
         }
 

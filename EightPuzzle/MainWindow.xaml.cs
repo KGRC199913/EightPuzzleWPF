@@ -92,10 +92,17 @@ namespace EightPuzzle
                 if (data == null)
                     return;
                 FullImage.Source = data.bitmapImage;
-                _timer.Second = data.time;
-                
+                FullImage.Visibility = Visibility.Visible;
+                LoadImageButton.Visibility = Visibility.Collapsed;
+                _timer.Stop();
+                _timer.Resume();
+                _timer = new GameTimer(data.time);
+                TimerLabel.DataContext = _timer;
+                _timer.Start();
+                MainGameContentControl.Content = new PlayAreaUserControl(FullImage.Source as BitmapImage, data.location);
             }
-            _timer.Resume();
+            else
+                _timer.Resume();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -111,8 +118,9 @@ namespace EightPuzzle
 
         private void RestartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            _timer.Pause();
-            _timer.Second = TIME_LIMIT;
+            _timer.Stop();
+            _timer = new GameTimer(TIME_LIMIT);
+            TimerLabel.DataContext = _timer;
             LoadImageButton.Visibility = Visibility.Visible;
             FullImage.Visibility = Visibility.Collapsed;
         }
