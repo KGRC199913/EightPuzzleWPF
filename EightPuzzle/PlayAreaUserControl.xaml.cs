@@ -76,15 +76,6 @@ namespace EightPuzzle
         }
 
         /// <summary>
-        /// Return an one-dimension array represent position of puzzles.
-        /// </summary>
-        /// <returns></returns>
-        public List<int> ListOfPosition()
-        {
-            return puzzle.ListOfPosition();
-        }
-
-        /// <summary>
         /// Check is enalbe to solve 8-puzzles.
         /// </summary>
         /// <returns></returns>
@@ -95,7 +86,7 @@ namespace EightPuzzle
                 for (int j = i + 1; j < 3; j++)
 
                     // Value 8 is used for empty space 
-                    if ((int)puzzle.Images[j, i].Tag < 8 && (int)puzzle.Images[i, j].Tag < 8 &&
+                    if ((int)puzzle.Images[i, j].Tag < 8 && (int)puzzle.Images[j, i].Tag < 8 &&
                                     (int)puzzle.Images[i, j].Tag > (int)puzzle.Images[j, i].Tag)
                         inv_count++;
             return inv_count % 2 == 0;
