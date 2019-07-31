@@ -150,7 +150,7 @@ namespace EightPuzzle
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    if (Images[i, j] != null && (int)Images[i, j].Tag != index)
+                    if (Images[j, i] != null && (int)Images[j, i].Tag != index)
                         return false;
                     index++;
                 }

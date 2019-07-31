@@ -36,7 +36,11 @@ namespace EightPuzzle
                     MessageBox.Show("Countdown finished");
                 }
                 );
-            
+        }
+
+        private void OnGameVictory()
+        {
+            MessageBox.Show("Meow, u won");
         }
 
         private void QuitGameButton_Click(object sender, RoutedEventArgs e)
@@ -56,6 +60,7 @@ namespace EightPuzzle
                 LoadImageButton.Visibility = Visibility.Collapsed;
                 FullImage.Visibility = Visibility.Visible;
                 MainGameContentControl.Content = new PlayAreaUserControl(path);
+                (MainGameContentControl.Content as PlayAreaUserControl).OnVictory += OnGameVictory;
                 _timer.Start();
             }
         }
@@ -100,6 +105,7 @@ namespace EightPuzzle
                 TimerLabel.DataContext = _timer;
                 _timer.Start();
                 MainGameContentControl.Content = new PlayAreaUserControl(FullImage.Source as BitmapImage, data.location);
+                (MainGameContentControl.Content as PlayAreaUserControl).OnVictory += OnGameVictory;
             }
             else
                 _timer.Resume();

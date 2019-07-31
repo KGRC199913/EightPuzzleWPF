@@ -36,7 +36,7 @@ namespace EightPuzzle
         {
             InitializeComponent();
             puzzle = new Puzzle(source);
-            while (isSolvable() == false)
+            while (!isSolvable())
                 puzzle = new Puzzle(source);
             Initialize();
         }
@@ -96,7 +96,7 @@ namespace EightPuzzle
 
                     // Value 8 is used for empty space 
                     if ((int)puzzle.Images[j, i].Tag < 8 && (int)puzzle.Images[i, j].Tag < 8 &&
-                                    (int)puzzle.Images[j, i].Tag > (int)puzzle.Images[i, j].Tag)
+                                    (int)puzzle.Images[i, j].Tag > (int)puzzle.Images[j, i].Tag)
                         inv_count++;
             return inv_count % 2 == 0;
         }
