@@ -118,6 +118,7 @@ namespace EightPuzzle
             }
 
             _timer.Pause();
+            PauseGameToggleButton.IsChecked = true;
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.AddExtension = true;
             dialog.DefaultExt = ".dat";
@@ -132,6 +133,8 @@ namespace EightPuzzle
                 data.time = _timer.Second;
                 _dao.Save(data, dialog.FileName);
             }
+
+            PauseGameToggleButton.IsChecked = false;
             _timer.Resume();
         }
 
