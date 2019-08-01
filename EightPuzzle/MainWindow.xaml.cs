@@ -85,7 +85,8 @@ namespace EightPuzzle
             if (dialog.ShowDialog() == true)
             {
                 string path = dialog.FileName;
-                FullImage.Source = new BitmapImage(new Uri(path));
+                var image = new BitmapImage(new Uri(path));
+                FullImage.Source = image;
                 LoadImageButton.Visibility = Visibility.Collapsed;
                 FullImage.Visibility = Visibility.Visible;
 

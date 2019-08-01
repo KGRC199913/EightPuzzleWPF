@@ -112,8 +112,9 @@
                 <Image x:Name="FullImage"
                        Width="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth, Converter={StaticResource minusTenConverter}}"
                        Height="{Binding ElementName=ConfigAreaBorder, Path=ActualWidth, Converter={StaticResource minusTenConverter}}"
-                       Canvas.Left="10"
-                       Canvas.Top="10"
+                       Canvas.Left="5"
+                       Canvas.Top="5"
+                       Stretch="Fill"
                        Visibility="Hidden"/>
             </Canvas>
             <StackPanel x:Name="OverallStatusStackPanel"
