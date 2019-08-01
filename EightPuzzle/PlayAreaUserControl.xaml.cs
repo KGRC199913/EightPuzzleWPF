@@ -81,13 +81,11 @@ namespace EightPuzzle
         /// <returns></returns>
         public bool isSolvable()
         {
+            var list = puzzle.ListOfPosition();
             int inv_count = 0;
-            for (int i = 0; i < 3 - 1; i++)
-                for (int j = i + 1; j < 3; j++)
-
-                    // Value 8 is used for empty space 
-                    if ((int)puzzle.Images[i, j].Tag < 8 && (int)puzzle.Images[j, i].Tag < 8 &&
-                                    (int)puzzle.Images[i, j].Tag > (int)puzzle.Images[j, i].Tag)
+            for (int i = 0; i < 9 - 1; i++)
+                for (int j = i + 1; j < 9; j++)
+                    if (list[i] < 8 && list[j] < 8 && list[i] > list[j])
                         inv_count++;
             return inv_count % 2 == 0;
         }
