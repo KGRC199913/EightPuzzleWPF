@@ -190,7 +190,7 @@ namespace EightPuzzle
 
         private void RestartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            _timer.Stop();
+            _timer?.Stop();
             _timer = null;
 
             TimerLabel.Visibility = Visibility.Collapsed;
