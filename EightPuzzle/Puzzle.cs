@@ -100,8 +100,16 @@ namespace EightPuzzle
 
             //Get the selected image from user.
             Img_src = new BitmapImage(new Uri(source));
-            PUZZLE_SIZE.WIDTH = (int)PUZZLE_TOTAL_SIZE / 3;
-            PUZZLE_SIZE.HEIGHT = (int)(PUZZLE_TOTAL_SIZE * Img_src.Height / Img_src.Width) / 3;
+            if (Img_src.Width > Img_src.Height)
+            {
+                PUZZLE_SIZE.WIDTH = (int)PUZZLE_TOTAL_SIZE / 3;
+                PUZZLE_SIZE.HEIGHT = (int)(PUZZLE_TOTAL_SIZE * Img_src.Height / Img_src.Width) / 3;
+            }
+            else
+            {
+                PUZZLE_SIZE.HEIGHT = (int)PUZZLE_TOTAL_SIZE / 3;
+                PUZZLE_SIZE.WIDTH = (int)(PUZZLE_TOTAL_SIZE * Img_src.Width / Img_src.Height) / 3;
+            }
 
             //Initialize temporary variables.
             CroppedBitmap img_cropped;
